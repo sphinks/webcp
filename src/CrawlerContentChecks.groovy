@@ -14,9 +14,11 @@ import org.jsoup.nodes.Element
  */
 class CrawlerContentChecks {
 
+
     private final static Pattern FILTERS = Pattern.compile(""".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4
         |wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz))""")
-    private static domainName = 'http://dx.com/'
+    private static config = new ConfigSlurper().parse(new File('src/ParserConfig.groovy').toURL())
+    private static domainName = config.dx.crawler.domain
 
     /**
      * Checks if current page worth to visit
@@ -34,26 +36,15 @@ class CrawlerContentChecks {
      */
     static void dataExtractor(String html) {
 
-        def config = new ConfigSlurper().parse(new File('src/ParserConfig.groovy').toURL())
-        //println config.dx.title
         for (String string : config.keySet()) {
             println string
         }
 
         Document doc = Jsoup.parse(html)
-        Element title = doc.select(config.dx.title).first()
+        Element title = doc.select(config.dx.parser.title).first()
         println("Title: ${title.text()}")
-        title = doc.select(config.dx.price).first()
+        title = doc.select(config.dx.parser.price).first()
         println("Price: ${title.text()}")
 
-
-        /*def parser = new org.cyberneko.html.parsers.SAXParser()
-
-        def slurper = new XmlSlurper(parser)
-        def htmlParser = slurper.parseText(html)
-
-        htmlParser.'**'.findAll{ it.@id == 'headline' }.each {
-            println "Class of element ${it.name()} is ${it.@class}, parent is ${it.parent().name()}"
-        }*/
     }
 }

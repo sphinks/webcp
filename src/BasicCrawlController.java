@@ -56,8 +56,8 @@ public class BasicCrawlController {
          * If your proxy also needs authentication:
          * config.setProxyUsername(username); config.getProxyPassword(password);
           */
-        config.setProxyHost("surf-proxy.intranet.db.com");
-        config.setProxyPort(8080);
+        //config.setProxyHost("surf-proxy.intranet.db.com");
+        //config.setProxyPort(8080);
 
         /*
          * This config parameter can be used to set your crawl to be resumable

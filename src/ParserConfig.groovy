@@ -9,6 +9,14 @@
 
 
 dx{
-    title="h1 > span#headline"
-    price="span#price"
+    crawler{
+        proxyHost=""
+        proxyPort=""
+        domain="http://dx.com"
+        siteSeed="http://dx.com/p/protective-soft-silicone-bumper-frame-w-screen-protector-film-for-iphone-5-white-192429"
+    }
+    parser{
+        title="h1 > span#headline"
+        price="span#price"
+    }
 }
