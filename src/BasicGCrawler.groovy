@@ -8,16 +8,13 @@ import java.util.regex.Pattern
 
 /**
  * Created with IntelliJ IDEA.
- * User: zeriiva
+ * User: Ivan Zerin
  * Date: 10/2/13
  * Time: 11:43 AM
- * To change this template use File | Settings | File Templates.
  */
 class BasicGCrawler extends WebCrawler {
 
-
-
-    Logger LOGGER = Logger.getLogger(BasicCrawler.class)
+    Logger LOGGER = Logger.getLogger(BasicGCrawler.class)
 
     CrawlStat myCrawlStat
     private PrintWriter outFile
@@ -26,9 +23,6 @@ class BasicGCrawler extends WebCrawler {
         myCrawlStat = new CrawlStat()
         try {
             outFile = new File('titles.txt').newPrintWriter()
-            /*if (!outFile.exists()) {
-                outFile.createNewFile()
-            }*/
         }catch (FileNotFoundException e){
             println("File not found")
             println("Unexpected file close")
@@ -57,18 +51,18 @@ class BasicGCrawler extends WebCrawler {
 
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData()
-            String text = htmlParseData.getText()
+            //String text = htmlParseData.getText()
             String html = htmlParseData.getHtml()
             CrawlerContentChecks.dataExtractor(html)
             String title = htmlParseData.getTitle()
             List<WebURL> links = htmlParseData.getOutgoingUrls()
             //if (title.contains("case")) {
-                try {
-                    outFile.write(title);
-                    outFile.write('\n');
-                } catch(IOException e){
-                    println("Get error while to to write " + title)
-                }
+            try {
+                outFile.write(title);
+                outFile.write('\n');
+            } catch(IOException e){
+                println("Get error while to to write " + title)
+            }
             //}
             myCrawlStat.incTotalLinks(links.size())
             myCrawlStat.incProcessedPages()
