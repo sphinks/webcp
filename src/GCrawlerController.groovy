@@ -2,16 +2,14 @@ import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
-import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
-
-import java.util.List;
+import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer
 
 /**
  * @author Ivan Zerin
  */
 class GCrawlerController {
 
-    static void initAndStartCrawler() throws Exception {
+    def static initAndStartCrawler() throws Exception {
 
         /*
          * crawlStorageFolder is a folder where intermediate crawl data is
@@ -33,7 +31,7 @@ class GCrawlerController {
          * Be polite: Make sure that we don't send more than 1 request per
          * second (1000 milliseconds between requests).
          */
-        config.setPolitenessDelay(200)
+        config.setPolitenessDelay(100)
 
         /*
          * You can set the maximum crawl depth here. The default value is -1 for
@@ -83,13 +81,13 @@ class GCrawlerController {
          * which are found in these pages
          */
 
-        controller.addSeed("http://dx.com/p/protective-soft-silicone-bumper-frame-w-screen-protector-film-for-iphone-5-white-192429")
+        controller.addSeed("http://dx.com/c/iphone-ipad-ipod-299/cases-protectors-201")
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
          */
-        controller.start(BasicGCrawler.class, numberOfCrawlers)
+        controller.start(GCrawler.class, numberOfCrawlers)
 
         List<Object> crawlersLocalData = controller.getCrawlersLocalData()
         long totalLinks = 0

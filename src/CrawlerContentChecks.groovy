@@ -1,9 +1,14 @@
+import com.mongodb.BasicDBObject
+import com.mongodb.DB
+import com.mongodb.DBCollection
+import com.mongodb.ServerAddress
 import edu.uci.ics.crawler4j.url.WebURL
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
 
 import java.util.regex.Pattern
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
+import com.mongodb.MongoClient
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,22 +30,51 @@ class CrawlerContentChecks {
      * @param url
      * @return
      */
-    static boolean shouldVisit(WebURL url) {
+    def static shouldVisit(WebURL url) {
         def href = url.getURL().toLowerCase()
-        return !FILTERS.matcher(href).matches() && href.startsWith(domainName)
+        return !FILTERS.matcher(href).matches() && href.startsWith(domainName) && href.contains('case') && href.contains('iphone')
     }
 
     /**
      * Extract data from html code of page
      * @param html
      */
-    static void dataExtractor(String html) {
+    def static dataExtractor(String html, String url) {
+
+        //walk(CONFIG)
+
+        MongoClient mongoClient = new MongoClient(new ServerAddress("localhost", 27017))
+        DB db = mongoClient.getDB("covers");
+        DBCollection colls = db.getCollection('Cover')
+        BasicDBObject object = new BasicDBObject()
 
         Document doc = Jsoup.parse(html)
         Element title = doc.select(CONFIG.dx.parser.title).first()
-        println("Title: ${title.text()}")
-        title = doc.select(CONFIG.dx.parser.price).first()
-        println("Price: ${title.text()}")
+        //println("Title: ${title.text()}")
+        if (title != null) {
+            object.append('title', title.text())
+            Element price = doc.select(CONFIG.dx.parser.price).first()
+            //println("Price: ${title.text()}")
+            object.append('price', price.text())
 
+            object.append('url', url)
+            Element sku = doc.select(CONFIG.dx.parser.sku).first()
+            object.append('id', sku.text() )
+            //println("Object: ${object.toString()}")
+            colls.insert(object)
+        }
+    }
+
+    //Test method to iterate over config file
+    def static walk( map, root=true ) {
+        map.each { key, value ->
+            if( value instanceof Map ) {
+                println "$key (${root?'root':'subroot'})"
+                walk( value, false )
+            }
+            else {
+                println "$key=$value"
+            }
+        }
     }
 }

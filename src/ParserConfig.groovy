@@ -18,5 +18,6 @@ dx{
     parser{
         title="h1 > span#headline"
         price="span#price"
+        sku="span#sku"
     }
 }

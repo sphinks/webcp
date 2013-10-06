@@ -8,7 +8,7 @@
 
 class GpathTest {
 
-    static main(args) {
+    def static main(args) {
 
         GCrawlerController.initAndStartCrawler();
 
